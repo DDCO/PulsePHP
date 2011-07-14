@@ -1,30 +1,26 @@
 <?php
-abstract class Controller
+class Controller
 {
-	protected function loadView($name="",$vars="")
+	public $TPL;
+	public $model;
+	
+	public function __construct()
 	{
-		if (is_array($vars))
-			extract($vars, EXTR_PREFIX_SAME, "wddx");
-		if(empty($name))
-			require_once(VIEW_PATH.get_class($this).".view.php");
-		else
-			require_once(VIEW_PATH.$name.".view.php");
+		$class = get_class($this);
+		$file = MODEL_PATH . $class . ".model.php";
+		if(file_exists($file))
+		{
+			require_once($file);
+			$modelClass = $class."Model"; 
+			$this->model = new $modelClass();
+		}
 	}
 	
-	protected function loadModel($name="")
+	public function setTemplate($name)
 	{
-		$class = "";
-		if(empty($name))
-		{
-			require_once(MODEL_PATH.__CLASS__.".model.php");
-			$class = __CLASS__."Model";
-		}
-		else
-		{
-			require_once(MODEL_PATH.$name.".model.php");
-			$class = $name."Model";
-		}
-		return new $class();
+		global $CONFIG;
+		if(file_exists("templates/".$name."/index.top.html")&&file_exists("templates/".$name."/index.bottom.html"))
+			$CONFIG["template"] = $name;
 	}
 }
 ?>

@@ -8,28 +8,28 @@ class User
 	{
 		$database = Database::getDatabaseObject();
 		$res = $database->sendQuery("SELECT usergroup FROM users WHERE username = @user",array("@user"=>$user));
-		return $database->getField($res,0);
+		return $database->getField(0);
 	}
 	
 	public static function getEmail($user)
 	{
 		$database = Database::getDatabaseObject();
 		$res = $database->sendQuery("SELECT email FROM users WHERE username = @user",array("@user"=>$user));
-		return $database->getField($res,0);
+		return $database->getField(0);
 	}
 	
 	public static function getPassword($user)
 	{
 		$database = Database::getDatabaseObject();
 		$res = $database->sendQuery("SELECT password FROM users WHERE username = @user",array("@user"=>$user));
-		return $database->getField($res,0);
+		return $database->getField(0);
 	}
 	
 	public static function userExists($user)
 	{
 		$database = Database::getDatabaseObject();
 		$res = $database->sendQuery("SELECT * FROM users WHERE username = @user",array("@user"=>$user));
-		if ($database->countRows($res)>0)
+		if ($database->countRows()>0)
 			return true;
 		return false;
 	}

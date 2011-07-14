@@ -9,7 +9,7 @@ Author URI: http://www.ginger-ninja.net/
 /* Generic Styling */
 
 body {
-	background:url(../images/bg-body.png) repeat-x top center #E8F7F9;
+	background:url(images/bg-body.png) repeat-x top center #E8F7F9;
 	font-family:"Trebuchet MS" Arial, Helvetica, sans-serif;
 	font-size:62.5%; /* Sets default font size to 10px */
 	color:#222222;
@@ -48,12 +48,12 @@ a:hover {
 	}
 #header {
 	height:140px;
-	background:url(../images/bg-header.jpg) no-repeat;
+	background:url(images/bg-header.jpg) no-repeat;
 	}
 #menu {
 	height:35px;
 	line-height:35px;
-	background:url(../images/bg-menu.png) repeat-x;
+	background:url(images/bg-menu.png) repeat-x;
 	padding:0 10px;
 	}
 #sidebar {
@@ -70,7 +70,7 @@ a:hover {
 #footer {
 	clear:both;
 	height:100px;
-	background:url(../images/bg-footer.jpg) no-repeat;
+	background:url(images/bg-footer.jpg) no-repeat;
 	}
 
 /* Entries */
@@ -96,7 +96,7 @@ a:hover {
 	}
 .comments a {
 	color:#6CC7DC;
-	background:url(../images/icon-comment.png) no-repeat 0px 2px;
+	background:url(images/icon-comment.png) no-repeat 0px 2px;
 	padding-left:20px;
 	padding-right:2px;
 	}
@@ -120,7 +120,7 @@ a:hover {
 	margin-right:2px;
 	}
 #menu li a:hover {
-	background:url(../images/bg-menu-hover.png) no-repeat center center;
+	background:url(images/bg-menu-hover.png) no-repeat center center;
 	}
 
 /* Sidebar */
@@ -146,7 +146,7 @@ a:hover {
 	}
 #sidebar-bottom {
 	height:20px;
-	background:url(../images/bg-sidebar-bottom.gif) no-repeat top center;
+	background:url(images/bg-sidebar-bottom.gif) no-repeat top center;
 	}
 
 /* Footer */
@@ -184,7 +184,7 @@ h1 {
 #feed {
 	height:25px;
 	width:126px;
-	background:url(../images/bg-feed.gif) no-repeat;
+	background:url(images/bg-feed.gif) no-repeat;
 	margin:0 auto;
 	padding-left:26px;
 	}
@@ -192,7 +192,7 @@ a.feed-button {
 	display:block;
     width:100px;
     height:25px;
-    background:url(../"images/button-feed.png") 0 0 no-repeat;
+    background:url("images/button-feed.png") 0 0 no-repeat;
     text-decoration: none;
 	}
 a:hover.feed-button {
@@ -204,6 +204,6 @@ a:hover.feed-button {
 #ad-top {
 	width:480px;
 	height:72px;
-	background:url(../images/bg-ad-top.png) no-repeat;
+	background:url(images/bg-ad-top.png) no-repeat;
 	padding:5px;
 	}

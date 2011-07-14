@@ -33,9 +33,9 @@ abstract class Database
 	
 	public abstract function sendQuery($query,$args=NULL);
 	public abstract function affectedRows();
-	public abstract function getRow($resource);
-	public abstract function getField($resource,$index);
-	public abstract function countRows($resource);
+	public abstract function getRow();
+	public abstract function getField($index);
+	public abstract function countRows();
 	public abstract function getError();
 }
 ?>

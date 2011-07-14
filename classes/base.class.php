@@ -16,16 +16,41 @@ class Framework
     	}
 	}
 	
-	public function loadController($class,$method)
+	public function getController($class)
 	{
 		$file = CONTROLLER_PATH . $class . ".controller.php";
 		if(file_exists($file))
 		{
 			require_once($file);
-			$controller = new $class();
-			if (method_exists($controller,$method))
-				$controller->$method();
+			return new $class();
 		}
+	}
+	
+	public function getModel($class)
+	{
+		$file = MODEL_PATH . $class . ".model.php";
+		if(file_exists($file))
+		{
+			require_once($file);
+			$modelClass = $class."Model"; 
+			return new $modelClass();
+		}
+	}
+	
+	public function getView($class,$method)
+	{
+		$file = VIEW_PATH . $class . '/' . $method . '.view.php';
+		if(file_exists($file))
+			return $file;
+	}
+	
+	// args array example: array("controller"=>"example","method"=>"index")
+	public function route($args=NULL)
+	{
+		if(is_array($args))
+			echo("http://".$_SERVER["HTTP_HOST"].'/'.$args["controller"].'/'.$args["method"]);
+		else
+			echo("http://".$_SERVER["HTTP_HOST"].'/');
 	}
 }
 ?>

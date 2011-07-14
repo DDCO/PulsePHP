@@ -1,16 +1,19 @@
 <?php
 class example extends Controller
 {
+	/*
+	* Model is automatically included if exists. As long as you follow the naming conventions
+	* You can access it from $this->model. Also add all your variable to $this->TPL so the view
+	* can have access to it.
+	*/
 	public function index()
 	{
 		$auth = new userAuth();
-		$TPL["isLoggedIn"] = $auth->isLoggedIn(); 
-		$this->loadView(NULL,$TPL);
+		$this->TPL["isLoggedIn"] = $auth->isLoggedIn();
 	}
 	
 	public function login()
 	{
-		$TPL = array();
 		$auth = new userAuth();
 		if($auth->isLoggedIn())
 			$auth->redirect("example/index");
@@ -38,11 +41,10 @@ class example extends Controller
 			);
 			$result = formVal::validate($formArgs);
 			if($result === true)
-				$TPL["auth"] = $auth->authenticate();
+				$this->TPL["auth"] = $auth->authenticate();
 			else
-				$TPL["errors"] = $result;
+				$this->TPL["errors"] = $result;
 		}
-		$this->loadView("login",$TPL);
 	}
 	
 	public function logout()
@@ -54,19 +56,15 @@ class example extends Controller
 	
 	public function register()
 	{
-		$TPL = array();
-		
 		$auth = new userAuth();
 		if($auth->isLoggedIn())
 			$auth->redirect("example/index");
-		
-		$exampleModel = $this->loadModel();
-		$result = $exampleModel->registrationFormValidate();
+			
+		$result = $this->model->registrationFormValidate();
 		if($result === true)
-			$exampleModel->addNewUser();
+			$this->model->addNewUser();
 		else
-			$TPL["errors"] = $result;
-		$this->loadView("register",$TPL);
+			$this->TPL["errors"] = $result;
 	}
 }
 ?>

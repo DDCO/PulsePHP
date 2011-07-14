@@ -6,4 +6,5 @@ $CONFIG["db"] = "pulsephp";
 $CONFIG["username"] = "root";
 $CONFIG["password"] = "038455820";
 /*End of Database Info*/
+$CONFIG["template"] = "dreamy";
 ?>

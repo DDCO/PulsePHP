@@ -2,6 +2,7 @@
 class Mysql extends Database
 {
 	private $link;
+	private $resource;
 	
 	public function __construct()
 	{
@@ -27,7 +28,7 @@ class Mysql extends Database
 			foreach($args as $key => $value)
 				$query = preg_replace('/'.$key.'/','\''.mysql_real_escape_string($value).'\'',$query);
 		}
-		return mysql_query($query,$this->link);
+		$this->resource = mysql_query($query,$this->link);
 	}
 	
 	public function affectedRows()
@@ -35,25 +36,19 @@ class Mysql extends Database
 		return mysql_affected_rows($this->link);
 	}
 	
-	public function getRow($resource)
+	public function getRow()
 	{
-		if(!is_resource($resource))
-			return false;
-		return mysql_fetch_assoc($resource);
+		return mysql_fetch_assoc($this->resource);
 	}
 	
-	public function getField($resource,$index)
+	public function getField($index)
 	{
-		if(!is_resource($resource))
-			return false;
-		return mysql_result($resource,$index);
+		return mysql_result($this->resource,$index);
 	}
 	
-	public function countRows($resource)
+	public function countRows()
 	{
-		if(!is_resource($resource))
-			return false;
-		return mysql_num_rows($resource);
+		return mysql_num_rows($this->resource);
 	}
 	
 	public function getError()
