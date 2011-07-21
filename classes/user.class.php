@@ -7,7 +7,7 @@ class User
 	public static function getUsergroup($user)
 	{
 		$database = Database::getDatabaseObject();
-		$res = $database->sendQuery("SELECT usergroup FROM users WHERE username = @user",array("@user"=>$user));
+		$res = $database->sendQuery("SELECT name FROM usergroups g JOIN users u ON (u.usergroupID = g.id) WHERE username = @user",array("@user"=>$user));
 		return $database->getField(0);
 	}
 	
@@ -83,10 +83,10 @@ class User
 		Log::showErrorPage();
 	}
 	
-	public static function updateUsergroup($user, $group)
+	public static function updateUsergroup($user, $usergroupID)
 	{
 		$database = Database::getDatabaseObject();
-		$res = $database->sendQuery("UPDATE users SET usergroup = @group WHERE username = @user",array("@group"=>$group,"@user"=>$user));
+		$res = $database->sendQuery("UPDATE users SET usergroupID = @group WHERE username = @user",array("@group"=>$usergroupID,"@user"=>$user));
 		if($database->affectedRows() > 0)
 		{
 			Log::logAction("Updated usergroup of user " . $user);

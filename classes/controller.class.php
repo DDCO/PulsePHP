@@ -3,6 +3,7 @@ class Controller
 {
 	public $TPL;
 	public $model;
+	public $acl = array();
 	
 	public function __construct()
 	{

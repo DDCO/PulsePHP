@@ -2,6 +2,21 @@
 class example extends Controller
 {
 	/*
+	* ACL Example
+	* public $acl = array(
+	*	{usergroup} => array(
+	*		{methodname},
+	*		{methodname}
+	*	)
+	* );
+	*/
+	public $acl = array(
+		"Administrator" => "ALL",
+		"Registered" => "ALL",
+		"Guest" => "ALL"
+	);
+	
+	/*
 	* Model is automatically included if exists. As long as you follow the naming conventions
 	* You can access it from $this->model. Also add all your variable to $this->TPL so the view
 	* can have access to it.

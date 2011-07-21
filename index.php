@@ -27,6 +27,9 @@ $Controller = $framework->getController($class);
 if (method_exists($Controller,$method))
 	$Controller->$method();
 
+//Access Control
+ACL::hasAccess($Controller->acl,$method);
+
 //Extract TPL array for easy access in view
 if(!empty($Controller->TPL))
 	extract($Controller->TPL,EXTR_OVERWRITE);

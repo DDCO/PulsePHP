@@ -1,5 +1,5 @@
 I designed the framework to my desire, I have tried to create a simple, lightweight and an elegant object oriented design.
 TODO:
     - Create view helpers (form,paginate)
-    - Start ACL/Mailer classes
-    - Model be associated with database table? (Think about it).
+    - Start Mailer classes
+    - Model be associated with database table? Make it optional?

@@ -33,7 +33,7 @@
 	<div id="sidebar">
 		<div id="feed" style="text-align:center;"><a class="feed-button" href="#"></a></div>
 		<ul>
-			<li><a href="#">PulsePHP</a></li>
+			<li><a href="https://github.com/DDCO/PulsePHP">PulsePHP</a></li>
 			<li><a href="#">ircClient</a></li>
 		</ul>
 		<div id="sidebar-bottom">
