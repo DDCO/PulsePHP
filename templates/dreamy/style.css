@@ -36,6 +36,8 @@ a:hover {
 	text-decoration:none;
 	color:#6CC7DC;
 	}
+	
+input[type="submit"]{float:right;}
 
 /* Structure */
 

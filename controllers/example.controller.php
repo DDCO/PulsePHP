@@ -29,6 +29,7 @@ class example extends Controller
 	
 	public function login()
 	{
+		$this->TPL["errors"] = "";
 		$auth = new userAuth();
 		if($auth->isLoggedIn())
 			$auth->redirect("example/index");
