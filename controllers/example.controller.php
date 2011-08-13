@@ -82,17 +82,5 @@ class example extends Controller
 		else
 			$this->TPL["errors"] = $result;
 	}
-	
-	public function mailtest()
-	{
-		$mail = new Mailer();
-		$mail->addTo("dan.da.cruz.oliveira@gmail.com");
-		$mail->setFrom("support@dansfolio.homeip.net");
-		$mail->setSubject("PulsePHP Mailer Class Test");
-		$mail->setBody("Testing... OMG it works");
-		$mail->addAttachment("./index.php");
-		$mail->addAttachment("./config.php");
-		$mail->sendMail();
-	}
 }
 ?>
