@@ -20,7 +20,6 @@
 			<li><a href="<?php $framework->route(array('controller'=>'example','method'=>'index'));?>">Home</a></li>
 			<li><a href="http://dan-ubuntu.local:8080/">Internet PVR</a></li>
 			<li><a href="http://dan-ubuntu.local:8085/">Usenet Download Manager</a></li>
-			<li><a href="http://<?php echo($_SERVER['SERVER_NAME']);?>/drupal/">Drupal</a></li>
             <?php if(isset($isLoggedIn)&&$isLoggedIn) { ?>
             <li><a href="<?php $framework->route(array('controller'=>'example','method'=>'logout'));?>">Logout</a></li>
             <?php } else { ?>
