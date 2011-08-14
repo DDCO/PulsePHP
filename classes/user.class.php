@@ -62,13 +62,8 @@ class User
 				"@group"=>$group
 			));
 			if($database->affectedRows($res) > 0)
-			{
-				Log::logAction("User " . $user . " created");
 				return true;
-			}
-		} 
-		else
-			Log::showErrorPage(array("type"=>"1000","message"=>"User already exists","file"=>__FILE__,"line"=>__LINE__));
+		}
 	}
 	
 	public static function deleteUser($user)
@@ -76,11 +71,8 @@ class User
 		$database = Database::getDatabaseObject();
 		$res = $database->sendQuery("DELETE FROM users WHERE username = @user",array("@user"=>$user));
 		if($database->affectedRows() > 0)
-		{
-			Log::logAction("User " . $user . " Deleted");
 			return true;
-		}
-		Log::showErrorPage();
+		return false;
 	}
 	
 	public static function updateUsergroup($user, $usergroupID)
@@ -88,11 +80,8 @@ class User
 		$database = Database::getDatabaseObject();
 		$res = $database->sendQuery("UPDATE users SET usergroupID = @group WHERE username = @user",array("@group"=>$usergroupID,"@user"=>$user));
 		if($database->affectedRows() > 0)
-		{
-			Log::logAction("Updated usergroup of user " . $user);
 			return true;
-		}
-		Log::showErrorPage();
+		return false;
 	}
 	
 	public static function updatePassword($user,$pass)
@@ -100,22 +89,16 @@ class User
 		$database = Database::getDatabaseObject();
 		$res = $database->sendQuery("UPDATE users SET password = @pass WHERE username = @user",array("@pass"=>$pass,"@user"=>$user));
 		if($database->affectedRows() > 0)
-		{
-			Log::logAction("Updated password of user " . $user);
 			return true;
-		}
-		Log::showErrorPage();
+		return false;
 	}
 	
 	public static function updateEmail($user,$email)
 	{
 		$res = $database->sendQuery("UPDATE users SET email = @email WHERE username = @user",array("@email"=>$email,"@user"=>$user));
 		if($database->affectedRows() > 0)
-		{
-			Log::logAction("Updated email of user " . $user);
 			return true;
-		}
-		Log::showErrorPage();
+		return false;
 	}
 }
 ?>

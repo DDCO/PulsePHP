@@ -8,12 +8,7 @@ class Mysql extends Database
 	{
 		global $CONFIG;
 		if($this->link = mysql_connect($CONFIG["host"],$CONFIG["username"],$CONFIG["password"]))
-		{
-			if(!mysql_select_db($CONFIG["db"],$this->link))
-				Log::showErrorPage($this->getError());
-		}
-		else
-			Log::showErrorPage($this->getError());
+			mysql_select_db($CONFIG["db"],$this->link);
 	}
 	
 	/* 

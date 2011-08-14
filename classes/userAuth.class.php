@@ -22,7 +22,6 @@ class userAuth
 			
 			if(crypt($clearPassword,$password)===$password)
 			{
-				Log::logAction("User " . $username . " logged in");
 				$_SESSION["IsLoggedIn"] = true;
 				$_SESSION["user"] = array( 
 					"username" => $username,
@@ -39,7 +38,6 @@ class userAuth
 	
 	public function logout()
 	{
-		Log::logAction("User " . $_SESSION["user"]["username"] . " logged out");
 		session_destroy();
 		$_SESSION = array();
 		setcookie('PHPSESSID='.$_COOKIE['PHPSESSID'],'',time()-36000,'/');

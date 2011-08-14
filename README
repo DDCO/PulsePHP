@@ -3,5 +3,4 @@ TODO:
     - Create view helpers (paginate)
     - Model be associated with database table? Make it optional?
     - define prefix in index page and include it in all sql queries, even if its empty
-	- Make form validation more elegant. 
-    - Remove logging
+	- Make form validation more elegant.
