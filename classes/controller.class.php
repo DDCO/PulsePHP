@@ -19,9 +19,9 @@ class Controller
 	
 	public function setTemplate($name)
 	{
-		global $CONFIG;
+		global $_CONFIG;
 		if(file_exists("templates/".$name."/index.top.html")&&file_exists("templates/".$name."/index.bottom.html"))
-			$CONFIG["template"] = $name;
+			$_CONFIG["template"] = $name;
 	}
 }
 ?>

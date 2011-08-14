@@ -33,13 +33,16 @@ ACL::hasAccess($Controller->acl,$method);
 //Extract TPL array for easy access in view
 if(!empty($Controller->TPL))
 	extract($Controller->TPL,EXTR_OVERWRITE);
+	
+//Load Helper Classes
+$framework->loadHelpers();
 
 //Top portion of template
-require_once(TEMPLATE_PATH.$CONFIG["template"]."/index.top.php");
+require_once(TEMPLATE_PATH.$_CONFIG["template"]."/index.top.php");
 
 //Include view
 require_once($framework->getView($class,$method));
 
 //Bottom portion of template
-require_once(TEMPLATE_PATH.$CONFIG["template"]."/index.bottom.php");
+require_once(TEMPLATE_PATH.$_CONFIG["template"]."/index.bottom.php");
 ?>

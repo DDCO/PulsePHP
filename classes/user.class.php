@@ -7,28 +7,28 @@ class User
 	public static function getUsergroup($user)
 	{
 		$database = Database::getDatabaseObject();
-		$res = $database->sendQuery("SELECT name FROM usergroups g JOIN users u ON (u.usergroupID = g.id) WHERE username = @user",array("@user"=>$user));
+		$res = $database->sendQuery("SELECT name FROM #__usergroups g JOIN users u ON (u.usergroupID = g.id) WHERE username = @user",array("@user"=>$user));
 		return $database->getField(0);
 	}
 	
 	public static function getEmail($user)
 	{
 		$database = Database::getDatabaseObject();
-		$res = $database->sendQuery("SELECT email FROM users WHERE username = @user",array("@user"=>$user));
+		$res = $database->sendQuery("SELECT email FROM #__users WHERE username = @user",array("@user"=>$user));
 		return $database->getField(0);
 	}
 	
 	public static function getPassword($user)
 	{
 		$database = Database::getDatabaseObject();
-		$res = $database->sendQuery("SELECT password FROM users WHERE username = @user",array("@user"=>$user));
+		$res = $database->sendQuery("SELECT password FROM #__users WHERE username = @user",array("@user"=>$user));
 		return $database->getField(0);
 	}
 	
 	public static function userExists($user)
 	{
 		$database = Database::getDatabaseObject();
-		$res = $database->sendQuery("SELECT * FROM users WHERE username = @user",array("@user"=>$user));
+		$res = $database->sendQuery("SELECT * FROM #__users WHERE username = @user",array("@user"=>$user));
 		if ($database->countRows()>0)
 			return true;
 		return false;
@@ -53,9 +53,9 @@ class User
 		{
 			$salt = self::generateSalt();
 			$hash = crypt($pass,$salt);
-			$res = $database->sendQuery("SELECT max(userid) FROM users;");
+			$res = $database->sendQuery("SELECT max(userid) FROM #__users;");
 			$id = (int)$database->getField($res,0) + 1;
-			$res = $database->sendQuery("INSERT INTO users VALUES('".$id."',@user,@pass,@email,@group);",array(
+			$res = $database->sendQuery("INSERT INTO #__users VALUES('".$id."',@user,@pass,@email,@group);",array(
 				"@user"=>$user,
 				"@pass"=>$pass,
 				"@email"=>$email,
@@ -69,7 +69,7 @@ class User
 	public static function deleteUser($user)
 	{
 		$database = Database::getDatabaseObject();
-		$res = $database->sendQuery("DELETE FROM users WHERE username = @user",array("@user"=>$user));
+		$res = $database->sendQuery("DELETE FROM #__users WHERE username = @user",array("@user"=>$user));
 		if($database->affectedRows() > 0)
 			return true;
 		return false;
@@ -78,7 +78,7 @@ class User
 	public static function updateUsergroup($user, $usergroupID)
 	{
 		$database = Database::getDatabaseObject();
-		$res = $database->sendQuery("UPDATE users SET usergroupID = @group WHERE username = @user",array("@group"=>$usergroupID,"@user"=>$user));
+		$res = $database->sendQuery("UPDATE #__users SET usergroupID = @group WHERE username = @user",array("@group"=>$usergroupID,"@user"=>$user));
 		if($database->affectedRows() > 0)
 			return true;
 		return false;
@@ -87,7 +87,7 @@ class User
 	public static function updatePassword($user,$pass)
 	{
 		$database = Database::getDatabaseObject();
-		$res = $database->sendQuery("UPDATE users SET password = @pass WHERE username = @user",array("@pass"=>$pass,"@user"=>$user));
+		$res = $database->sendQuery("UPDATE #__users SET password = @pass WHERE username = @user",array("@pass"=>$pass,"@user"=>$user));
 		if($database->affectedRows() > 0)
 			return true;
 		return false;
@@ -95,7 +95,7 @@ class User
 	
 	public static function updateEmail($user,$email)
 	{
-		$res = $database->sendQuery("UPDATE users SET email = @email WHERE username = @user",array("@email"=>$email,"@user"=>$user));
+		$res = $database->sendQuery("UPDATE #__users SET email = @email WHERE username = @user",array("@email"=>$email,"@user"=>$user));
 		if($database->affectedRows() > 0)
 			return true;
 		return false;

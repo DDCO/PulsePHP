@@ -7,8 +7,8 @@ abstract class Database
 	
 	public static function singleton()
 	{
-		global $CONFIG;
-		switch($CONFIG["driver"])
+		global $_CONFIG;
+		switch($_CONFIG["driver"])
 		{
 			case "mysql":
 				require_once(API_PATH."drivers/mysql.class.php");

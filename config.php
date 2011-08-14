@@ -1,10 +1,11 @@
 <?php
 /*Start of Database Info*/
-$CONFIG["host"] = "localhost";
-$CONFIG["driver"] = "mysql";
-$CONFIG["db"] = "pulsephp";
-$CONFIG["username"] = "root";
-$CONFIG["password"] = "038455820";
+$_CONFIG["host"] = "localhost";
+$_CONFIG["driver"] = "mysql";
+$_CONFIG["db"] = "pulsephp";
+$_CONFIG["tablePrefix"] = "";
+$_CONFIG["username"] = "root";
+$_CONFIG["password"] = "038455820";
 /*End of Database Info*/
-$CONFIG["template"] = "dreamy";
+$_CONFIG["template"] = "dreamy";
 ?>

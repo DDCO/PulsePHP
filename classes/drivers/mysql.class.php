@@ -6,23 +6,26 @@ class Mysql extends Database
 	
 	public function __construct()
 	{
-		global $CONFIG;
-		if($this->link = mysql_connect($CONFIG["host"],$CONFIG["username"],$CONFIG["password"]))
-			mysql_select_db($CONFIG["db"],$this->link);
+		global $_CONFIG;
+		if($this->link = mysql_connect($_CONFIG["host"],$_CONFIG["username"],$_CONFIG["password"]))
+			mysql_select_db($_CONFIG["db"],$this->link);
 	}
 	
 	/* 
 	 *  Example query: SELECT * FROM users WHERE username = @username;
 	 *  Example Args array: array ( "@username" => "admin" );
 	 *  replace: SELECT * FROM users WHERE username = 'admin'; 
+	 *	TODO: parent class should add args and table prefix
 	 */
 	public function sendQuery($query,$args=NULL)
 	{
+		global $_CONFIG;
 		if(is_array($args))
 		{
 			foreach($args as $key => $value)
 				$query = preg_replace('/'.$key.'/','\''.mysql_real_escape_string($value).'\'',$query);
 		}
+		$query = str_replace("#__",$_CONFIG["tablePrefix"],$query);
 		$this->resource = mysql_query($query,$this->link);
 	}
 	

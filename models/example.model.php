@@ -5,7 +5,7 @@ class exampleModel extends Model
 	{
 		if($_SERVER['REQUEST_METHOD'] == "POST")
 		{
-			$formArgs = array(
+			$rules = array(
 				"rules" => array(
 					"username" => array(
 						"required" => true,
@@ -25,7 +25,7 @@ class exampleModel extends Model
 						"email" => true
 					)
 				),
-				"message" => array(
+				"messages" => array(
 					"username" => array(
 						"required" => "Username is required.",
 						"minlength" => "Username must be greater then or equal to 3 characters.",
@@ -45,7 +45,7 @@ class exampleModel extends Model
 					)
 				)
 			);
-			return formVal::validate($formArgs);
+			return formVal::validate($rules);
 		}
 		return false;
 	}

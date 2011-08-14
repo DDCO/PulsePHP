@@ -16,6 +16,17 @@ class Framework
     	}
 	}
 	
+	public function loadHelpers()
+	{
+		$path = API_PATH."helpers/";
+		$handle = opendir($path);
+		while (false !== ($file = readdir($handle))) 
+		{
+			if(preg_match("/^[A-Za-z]+.class.php$/",$file))
+        		require_once($path.$file);
+    	}
+	}
+	
 	public function getController($class)
 	{
 		$file = CONTROLLER_PATH . $class . ".controller.php";
@@ -45,12 +56,17 @@ class Framework
 	}
 	
 	// args array example: array("controller"=>"example","method"=>"index")
-	public function route($args=NULL)
+	public function route($args=NULL,$print=true)
 	{
+		$url = "";
 		if(is_array($args))
-			echo("http://".$_SERVER["HTTP_HOST"].'/'.$args["controller"].'/'.$args["method"]);
+			$url = "http://".$_SERVER["HTTP_HOST"].'/'.$args["controller"].'/'.$args["method"];
 		else
-			echo("http://".$_SERVER["HTTP_HOST"].'/');
+			$url = "http://".$_SERVER["HTTP_HOST"].'/';
+		if($print)
+			echo($url);
+		else
+			return $url;
 	}
 }
 ?>
