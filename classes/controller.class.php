@@ -16,12 +16,5 @@ class Controller
 			$this->model = new $modelClass();
 		}
 	}
-	
-	public function setTemplate($name)
-	{
-		global $_CONFIG;
-		if(file_exists("templates/".$name."/index.top.html")&&file_exists("templates/".$name."/index.bottom.html"))
-			$_CONFIG["template"] = $name;
-	}
 }
 ?>
