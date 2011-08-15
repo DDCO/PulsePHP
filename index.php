@@ -15,6 +15,9 @@ $uri_array = preg_split("[\\/]", $_SERVER['REQUEST_URI'],-1,PREG_SPLIT_NO_EMPTY)
 
 $class = empty($uri_array[0])?"example":$uri_array[0];
 $method = empty($uri_array[1])?"index":$uri_array[1];
+$params = array();
+for($i = 2; $i < count($uri_array); $i++)
+	$params[] = $uri_array[$i];
 
 //Initialize Framework Libraries
 $framework = new Framework();
@@ -25,7 +28,7 @@ Database::singleton();
 //Get Controller and run calling function 
 $Controller = $framework->getController($class);
 if (method_exists($Controller,$method))
-	$Controller->$method();
+	call_user_func_array(array($Controller,$method),$params);
 
 //Access Control
 ACL::hasAccess($Controller->acl,$method);
