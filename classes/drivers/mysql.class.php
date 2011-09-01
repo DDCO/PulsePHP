@@ -39,6 +39,17 @@ class Mysql extends Database
 		return mysql_fetch_assoc($this->resource);
 	}
 	
+	public function getRows()
+	{
+		$i = 0;
+		while(true)
+		{
+			$temp[$i++] = mysql_fetch_assoc($this->resource);
+			if(!$temp[$i])
+				return $temp;
+		}
+	}
+	
 	public function getField($index)
 	{
 		return mysql_result($this->resource,$index);

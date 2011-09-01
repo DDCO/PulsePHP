@@ -10,5 +10,5 @@
 	$form->addLabel("Email: ");
 	$form->addElement("Textbox",array("name"=>"email"));
 	$form->addElement("SubmitButton",array("value"=>"Register"));
-	$form->printForm();
+	$form->render();
 ?>

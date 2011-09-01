@@ -6,5 +6,5 @@
 	$form->addLabel("Password: ");
 	$form->addElement("PasswordField",array("name"=>"password"));
 	$form->addElement("SubmitButton",array("value"=>"Log in"));
-	$form->printForm();
+	$form->render();
 ?>

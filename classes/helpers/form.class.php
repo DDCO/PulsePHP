@@ -242,7 +242,7 @@ class formHelper
 		array_push( $this->elements[$i], $element );
 	}
 	
-	public function printForm()
+	public function render()
 	{
 		$html = "<table><thead><tr><th colspan='3'><h3>".$this->title."</h3></th></tr></thead><tbody>";
 		$html .= "<form class='".$this->title."' method='".$this->method."' action='".$this->action."'>";
