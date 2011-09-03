@@ -23,7 +23,7 @@ class Mysql extends Database
 		if(is_array($args))
 		{
 			foreach($args as $key => $value)
-				$query = preg_replace('/'.$key.'/','\''.mysql_real_escape_string($value).'\'',$query);
+				$query = str_replace($key,'\''.mysql_real_escape_string($value).'\'',$query);
 		}
 		$query = str_replace("#__",$_CONFIG["tablePrefix"],$query);
 		$this->resource = mysql_query($query,$this->link);
@@ -63,6 +63,21 @@ class Mysql extends Database
 	public function getError()
 	{
 		return array ( "type" => mysql_errno($this->link), "message" => mysql_error($this->link), "file" => __FILE__, "line" => __LINE__ );
+	}
+	
+	public function update()
+	{
+		return true;
+	}
+	
+	public function insert()
+	{
+		return true;
+	}
+	
+	public function select()
+	{
+		return true;
 	}
 }
 ?>

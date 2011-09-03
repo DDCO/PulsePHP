@@ -38,5 +38,8 @@ abstract class Database
 	public abstract function getField($index);
 	public abstract function countRows();
 	public abstract function getError();
+	public abstract function update();
+	public abstract function select();
+	public abstract function insert();
 }
 ?>

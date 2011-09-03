@@ -55,8 +55,7 @@ class example extends Controller
 		);
 		if(formVal::validate($formArgs))
 			$this->TPL["auth"] = $auth->authenticate();
-		else
-			$this->TPL["errors"] = formVal::getErrors();
+		$this->TPL["errors"] = formVal::getErrors();
 	}
 	
 	public function logout()
@@ -73,9 +72,8 @@ class example extends Controller
 			$auth->redirect("example/index");
 			
 		if(formVal::validate($this->model->registrationFormRules))
-			$this->model->addNewUser(); //Finish
-		else
-			$this->TPL["errors"] = formVal::getErrors();
+			User::addUser($_POST['username'],$_POST['password'],$_POST['email'],2);
+		$this->TPL["errors"] = formVal::getErrors();
 	}
 }
 ?>

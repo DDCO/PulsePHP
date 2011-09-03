@@ -37,13 +37,14 @@ class User
 	//Returns salt for Blowfish crypt
 	public static function generateSalt()
 	{
-		$salt = "$2a$";
+		$salt = "$2a";
 		$salt .= "$10$"; //Cost parameter (higher number = lower performance && higher number = more secure) must be from 4-31
 		$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 		$len = strlen($chars);
-		for($i = 0; $i < 22; $i++)
+		for($i = 0; $i < 25; $i++)
 			$salt .= $chars[rand(0,$len-1)];
 		$salt .= "$";
+		return $salt;
 	}
 	
 	public static function addUser($user,$pass,$email,$group)
@@ -53,17 +54,17 @@ class User
 		{
 			$salt = self::generateSalt();
 			$hash = crypt($pass,$salt);
-			$res = $database->sendQuery("SELECT max(userid) FROM #__users;");
-			$id = (int)$database->getField($res,0) + 1;
-			$res = $database->sendQuery("INSERT INTO #__users VALUES('".$id."',@user,@pass,@email,@group);",array(
+			die($hash.':'.$salt);
+			$res = $database->sendQuery("INSERT INTO #__users (username,password,email,usergroupID) VALUES(@user,@pass,@email,@group);",array(
 				"@user"=>$user,
-				"@pass"=>$pass,
+				"@pass"=>$hash.':'.$salt,
 				"@email"=>$email,
 				"@group"=>$group
 			));
 			if($database->affectedRows($res) > 0)
 				return true;
 		}
+		return false;
 	}
 	
 	public static function deleteUser($user)

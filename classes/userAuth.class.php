@@ -18,9 +18,11 @@ class userAuth
 		if(User::userExists($username))
 		{
 			$clearPassword = $_POST["password"];
-			$password = User::getPassword($username);
+			$password = explode(':',User::getPassword($username));
+			$hash = $password[0];
+			$salt = $password[1];
 			
-			if(crypt($clearPassword,$password)===$password)
+			if(crypt($clearPassword,$salt)===$hash)
 			{
 				$_SESSION["IsLoggedIn"] = true;
 				$_SESSION["user"] = array( 
