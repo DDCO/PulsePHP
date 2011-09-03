@@ -34,33 +34,29 @@ class example extends Controller
 		if($auth->isLoggedIn())
 			$auth->redirect("example/index");
 		
-		if($_SERVER['REQUEST_METHOD'] == "POST")
-		{
-			//form validation 
-			$formArgs = array(
-				"rules" => array(
-					"username" => array(
-						"required" => true
-					),
-					"password" => array(
-						"required" => true
-					)
+		//form validation 
+		$formArgs = array(
+			"rules" => array(
+				"username" => array(
+					"required" => true
 				),
-				"messages" => array(
-					"username" => array(
-						"required" => "Username field is required."
-					),
-					"password" => array(
-						"required" => "Password field is required."
-					)
+				"password" => array(
+					"required" => true
 				)
-			);
-			$result = formVal::validate($formArgs);
-			if($result === true)
-				$this->TPL["auth"] = $auth->authenticate();
-			else
-				$this->TPL["errors"] = $result;
-		}
+			),
+			"messages" => array(
+				"username" => array(
+					"required" => "Username field is required."
+				),
+				"password" => array(
+					"required" => "Password field is required."
+				)
+			)
+		);
+		if(formVal::validate($formArgs))
+			$this->TPL["auth"] = $auth->authenticate();
+		else
+			$this->TPL["errors"] = formVal::getErrors();
 	}
 	
 	public function logout()
@@ -76,11 +72,10 @@ class example extends Controller
 		if($auth->isLoggedIn())
 			$auth->redirect("example/index");
 			
-		$result = $this->model->registrationFormValidate();
-		if($result === true)
-			$this->model->addNewUser();
+		if(formVal::validate($this->model->registrationFormRules))
+			$this->model->addNewUser(); //Finish
 		else
-			$this->TPL["errors"] = $result;
+			$this->TPL["errors"] = formVal::getErrors();
 	}
 }
 ?>

@@ -1,6 +1,8 @@
 <?php 
 class formVal
 {	
+	public static $errors;
+
 	private function __contruct(){}
 	
 	/*
@@ -42,12 +44,15 @@ class formVal
 	*/
 	public static function validate($args)
 	{
-		$errors = array();
+		self::$errors = array();
 		if(!is_array($args))
 			return false;
+		if(empty($_POST))
+			return false;
+
 		foreach($args["rules"] as $field => $value)
 		{
-			$fieldValue = $_REQUEST[$field];
+			$fieldValue = $_POST[$field];
 			foreach($value as $rule => $ruleValue)
 			{
 				if(empty($ruleValue))
@@ -57,84 +62,89 @@ class formVal
 					case "required":
 						if(empty($fieldValue))
 						{
-							$errors[$field] = $args["messages"][$field][$rule];
+							self::$errors[$field] = $args["messages"][$field][$rule];
 							break 2;
 						}
 					break;
 					case "minlength":
 						if( strlen($fieldValue) < $ruleValue )
 						{
-							$errors[$field] = $args["messages"][$field][$rule];
+							self::$errors[$field] = $args["messages"][$field][$rule];
 							break 2;
 						}
 					break;
 					case "maxlength":
 						if( strlen($fieldValue) > $ruleValue )
 						{
-							$errors[$field] = $args["messages"][$field][$rule];
+							self::$errors[$field] = $args["messages"][$field][$rule];
 							break 2;
 						}
 					break;
 					case "email":
 						if(!self::isEmail($fieldValue))
 						{
-							$errors[$field] = $args["messages"][$field][$rule];
+							self::$errors[$field] = $args["messages"][$field][$rule];
 							break 2;
 						}
 					break;
 					case "phonenumber":
 						if(!self::isPhonenumber($fieldValue))
 						{
-							$errors[$field] = $args["messages"][$field][$rule];
+							self::$errors[$field] = $args["messages"][$field][$rule];
 							break 2;
 						}
 					break;
 					case "postalcode":
 						if(!self::isPostalcode($fieldValue))
 						{
-							$errors[$field] = $args["messages"][$field][$rule];
+							self::$errors[$field] = $args["messages"][$field][$rule];
 							break 2;
 						}
 					break;
 					case "alphanumeric":
 						if(!ctype_alnum($fieldValue))
 						{
-							$errors[$field] = $args["messages"][$field][$rule];
+							self::$errors[$field] = $args["messages"][$field][$rule];
 							break 2;
 						}
 					break;
 					case "numeric":
 						if(!ctype_digit($fieldValue))
 						{
-							$errors[$field] = $args["messages"][$field][$rule];
+							self::$errors[$field] = $args["messages"][$field][$rule];
 							break 2;
 						}
 					break;
 					case "alphabetic":
 						if(!ctype_alpha($fieldValue))
 						{
-							$errors[$field] = $args["messages"][$field][$rule];
+							self::$errors[$field] = $args["messages"][$field][$rule];
 							break 2;
 						}
 					break;
 					case "lowercase":
 						if(!ctype_lower($fieldValue))
 						{
-							$errors[$field] = $args["messages"][$field][$rule];
+							self::$errors[$field] = $args["messages"][$field][$rule];
 							break 2;
 						}
 					break;
 					case "uppercase":
 						if(!ctype_upper($fieldValue))
 						{
-							$errors[$field] = $args["messages"][$field][$rule];
+							self::$errors[$field] = $args["messages"][$field][$rule];
 							break 2;
 						}
 					break;
 				}
 			}
 		}
-		return empty($errors)?true:$errors;
+		return empty(self::$errors)?true:false;
+	}
+	
+	public static function getErrors()
+	{
+		return self::$errors;
 	}
 	
 	public static function isEmail($email)
