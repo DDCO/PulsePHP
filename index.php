@@ -23,7 +23,8 @@ for($i = 2; $i < count($uri_array); $i++)
 $framework = new Framework();
 
 //Initialize Database Connection
-Database::singleton();
+if(class_exists("Database"))
+	Database::singleton();
 
 //Get Controller and run calling function 
 $Controller = $framework->getController($class);
@@ -31,7 +32,8 @@ if (method_exists($Controller,$method))
 	call_user_func_array(array($Controller,$method),$params);
 
 //Access Control
-ACL::hasAccess($Controller->acl,$method);
+if(class_exists("ACL"))
+	ACL::hasAccess($Controller->acl,$method);
 
 //Extract TPL array for easy access in view
 if(!empty($Controller->TPL))
