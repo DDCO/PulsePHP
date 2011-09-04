@@ -19,13 +19,7 @@ class Mysql extends Database
 	 */
 	public function sendQuery($query,$args=NULL)
 	{
-		global $_CONFIG;
-		if(is_array($args))
-		{
-			foreach($args as $key => $value)
-				$query = str_replace($key,'\''.mysql_real_escape_string($value).'\'',$query);
-		}
-		$query = str_replace("#__",$_CONFIG["tablePrefix"],$query);
+		parent::sendQuery($query,$args); // Calls escapeArgs and replaces #__ placeholder with database prefix.
 		$this->resource = mysql_query($query,$this->link);
 	}
 	
@@ -65,19 +59,14 @@ class Mysql extends Database
 		return array ( "type" => mysql_errno($this->link), "message" => mysql_error($this->link), "file" => __FILE__, "line" => __LINE__ );
 	}
 	
-	public function update()
+	public function escapeArgs($query,$args)
 	{
-		return true;
-	}
-	
-	public function insert()
-	{
-		return true;
-	}
-	
-	public function select()
-	{
-		return true;
+		if(is_array($args))
+		{
+			foreach($args as $key => $value)
+				$query = str_replace($key,'\''.mysql_real_escape_string($value).'\'',$query);
+		}
+		return $query;
 	}
 }
 ?>

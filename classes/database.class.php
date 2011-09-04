@@ -31,15 +31,19 @@ abstract class Database
 		return self::$instance;
 	}
 	
-	public abstract function sendQuery($query,$args=NULL);
+	public function sendQuery(&$query,&$args=NULL)
+	{
+		global $_CONFIG;
+		$query = str_replace("#__",$_CONFIG["tablePrefix"],$query);
+		$query = self::$instance->escapeArgs($query,$args);
+	}
+	
 	public abstract function affectedRows();
 	public abstract function getRow();
 	public abstract function getRows();
 	public abstract function getField($index);
 	public abstract function countRows();
 	public abstract function getError();
-	public abstract function update();
-	public abstract function select();
-	public abstract function insert();
+	public abstract function escapeArgs($query,$args);
 }
 ?>

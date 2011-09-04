@@ -1,4 +1,3 @@
 I designed the framework to my desire, I have tried to create a simple, lightweight and an elegant object oriented design.
 TODO:
-    - Database class should add args and table prefix not driver
-    - add update,insert,select function to db class
+    - add update,insert,select function in model class
