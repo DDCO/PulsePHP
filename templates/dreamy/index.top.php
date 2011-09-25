@@ -17,15 +17,15 @@
 
 	<div id="menu">
 		<ul>
-			<li><a href="<?php $framework->route(array('controller'=>'example','method'=>'index'));?>">Home</a></li>
+			<li><a href="<?php $framework->route('example','index');?>">Home</a></li>
 			<li><a href="http://dan-ubuntu.local:8080/">Internet PVR</a></li>
 			<li><a href="http://dan-ubuntu.local:8085/">Usenet Download Manager</a></li>
-            <?php if(isset($isLoggedIn)&&$isLoggedIn) { ?>
-            <li><a href="<?php $framework->route(array('controller'=>'example','method'=>'logout'));?>">Logout</a></li>
+            <?php if(isset($_SESSION["isLoggedIn"])&&$_SESSION["isLoggedIn"]) { ?>
+            <li><a href="<?php $framework->route('example','logout');?>">Logout</a></li>
             <?php } else { ?>
-            <li><a href="<?php $framework->route(array('controller'=>'example','method'=>'login'));?>">Login</a></li>
+            <li><a href="<?php $framework->route('example','login');?>">Login</a></li>
             <?php } ?>
-            <li><a href="<?php $framework->route(array('controller'=>'example','method'=>'register'));?>">Register</a></li>
+            <li><a href="<?php $framework->route('example','register');?>">Register</a></li>
 		</ul>
 	</div>
 
@@ -44,7 +44,7 @@
 		<div id="ad-top">
 			<!-- Insert 468x60 banner advertisement -->
 		</div>
-        <?php if(isset($isLoggedIn)&&$isLoggedIn) { ?>
+        <?php if(isset($_SESSION["isLoggedIn"])&&$_SESSION["isLoggedIn"]) { ?>
         <span style="padding-left:10px;">Welcome <?php echo($_SESSION["user"]["username"])?></span>
         <?php } ?>
 		<div class="entry">

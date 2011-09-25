@@ -1,5 +1,5 @@
 <?php
-	$form = new formHelper("Register",$framework->route(array("controller"=>"example","method"=>"register"),false),"post");
+	$form = new formHelper("Register",$framework->route("example","register",false),"post");
 	$form->errors = $errors;
 	$form->addLabel("Username: ");
 	$form->addElement("Textbox",array("name"=>"username"));

@@ -55,18 +55,42 @@ class Framework
 			return $file;
 	}
 	
-	// args array example: array("controller"=>"example","method"=>"index")
-	public function route($args=NULL,$print=true)
+	public function setTemplate($name)
 	{
-		$url = "";
-		if(is_array($args))
-			$url = "http://".$_SERVER["HTTP_HOST"].'/'.$args["controller"].'/'.$args["method"];
+		global $_CONFIG;
+		$_CONFIG["template"] = $name;
+	}
+	
+	public function parseURI()
+	{
+		global $_CONFIG;
+		if($_CONFIG["SEO"])
+			return preg_split("[\\/]", $_SERVER['REQUEST_URI'],-1,PREG_SPLIT_NO_EMPTY);
 		else
-			$url = "http://".$_SERVER["HTTP_HOST"].'/';
-		if($print)
-			echo($url);
+		{
+			$uri_array = array();
+			$uri_array[0] = isset($_GET["controller"])?$_GET["controller"]:"";
+			$uri_array[1] = isset($_GET["method"])?$_GET["method"]:"";
+			if(isset($_GET["args"]))
+				return array_merge($uri_array,explode(',',$_GET["args"]));
+			return $uri_array;
+		}
+	}
+	
+	public function route($controller='',$method='',$print=true)
+	{
+		global $_CONFIG;
+		if($_CONFIG["SEO"])
+			$url = "http://".$_SERVER["HTTP_HOST"].dirname($_SERVER["PHP_SELF"]).$controller.'/'.$method;
 		else
+		{
+			$url = "http://".$_SERVER["HTTP_HOST"].dirname($_SERVER["PHP_SELF"]);
+			if(!empty($controller) && !empty($method))
+				$url .= "index.php?controller=".$controller."&amp;method=".$method;
+		}
+		if(!$print)
 			return $url;
+		echo($url);
 	}
 }
 ?>

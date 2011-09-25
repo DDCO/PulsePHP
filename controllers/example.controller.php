@@ -24,15 +24,14 @@ class example extends Controller
 	public function index()
 	{
 		$auth = new userAuth();
-		$this->TPL["isLoggedIn"] = $auth->isLoggedIn();
 	}
 	
 	public function login()
 	{
 		$this->TPL["errors"] = "";
 		$auth = new userAuth();
-		if($auth->isLoggedIn())
-			$auth->redirect("example/index");
+		$auth->redirectPage = "example/index";
+		$auth->isLoggedIn();
 		
 		//form validation 
 		$formArgs = array(

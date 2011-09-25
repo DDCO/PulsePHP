@@ -1,15 +1,15 @@
 <?php
 class userAuth
 {
-	public $loginPage = "example/login";
+	public $redirectPage;
 	
 	public function __construct(){}
 	
 	public function isLoggedIn()
 	{
-		if(empty($_SESSION["IsLoggedIn"]) || $_SESSION["IsLoggedIn"] == false)
+		if(empty($_SESSION["isLoggedIn"]) || $_SESSION["isLoggedIn"] == false)
 			return false;
-		return true;
+		$this->redirect($redirectPage);
 	}
 	
 	public function authenticate()
@@ -24,7 +24,7 @@ class userAuth
 			
 			if(crypt($clearPassword,$salt)===$hash)
 			{
-				$_SESSION["IsLoggedIn"] = true;
+				$_SESSION["isLoggedIn"] = true;
 				$_SESSION["user"] = array( 
 					"username" => $username,
 					"password" => $password,
@@ -32,7 +32,7 @@ class userAuth
 					"email" => User::getEmail($username),
 					"usergroup" => User::getUsergroup($username) 
 				);
-				$this->redirect("example/index");
+				$this->redirect($redirectPage);
 			}
 		}
 		return false;

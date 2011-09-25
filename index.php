@@ -11,16 +11,16 @@ define("TEMPLATE_PATH","templates/");
 require_once( API_PATH."base.class.php" );
 require_once("config.php");
 
-$uri_array = preg_split("[\\/]", $_SERVER['REQUEST_URI'],-1,PREG_SPLIT_NO_EMPTY);
+//Initialize Framework Libraries
+$framework = new Framework();
 
-$class = empty($uri_array[0])?"example":$uri_array[0];
+$uri_array = $framework->parseURI();
+
+$class = empty($uri_array[0])?$_CONFIG["default"]:$uri_array[0];
 $method = empty($uri_array[1])?"index":$uri_array[1];
 $params = array();
 for($i = 2; $i < count($uri_array); $i++)
 	$params[] = $uri_array[$i];
-
-//Initialize Framework Libraries
-$framework = new Framework();
 
 //Initialize Database Connection
 if(class_exists("Database"))
