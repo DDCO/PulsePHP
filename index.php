@@ -6,48 +6,56 @@ define("CONTROLLER_PATH","controllers/");
 define("MODEL_PATH","models/");
 define("VIEW_PATH","views/");
 define("TEMPLATE_PATH","templates/");
+define("WEB_DIRECTORY",(isset($_SERVER['HTTPS'])?"https://":"http://").rtrim($_SERVER["HTTP_HOST"].dirname($_SERVER["PHP_SELF"]),"/\\").'/');
+define("DS",'/');
 
 //Load base API
-require_once( API_PATH."base.class.php" );
 require_once("config.php");
+require_once( API_PATH."base.class.php" );
 
 //Initialize Framework Libraries
-$framework = new Framework();
+Framework::load();
 
-$uri_array = $framework->parseURI();
-
-$class = empty($uri_array[0])?$_CONFIG["default"]:$uri_array[0];
-$method = empty($uri_array[1])?"index":$uri_array[1];
-$params = array();
-for($i = 2; $i < count($uri_array); $i++)
-	$params[] = $uri_array[$i];
+$uri = Framework::parseURI();
 
 //Initialize Database Connection
-if(class_exists("Database"))
-	Database::singleton();
+Database::singleton();
 
 //Get Controller and run calling function 
-$Controller = $framework->getController($class);
-if (method_exists($Controller,$method))
-	call_user_func_array(array($Controller,$method),$params);
+$Controller = Framework::getController($uri["class"]);
 
 //Access Control
-if(class_exists("ACL"))
-	ACL::hasAccess($Controller->acl,$method);
+ACL::hasAccess($Controller->acl,$uri["method"]);
+
+if (method_exists($Controller,$uri["method"]))
+	call_user_func_array(array($Controller,$uri["method"]),$uri["params"]);
+else
+	trigger_error("Page does not exist", E_USER_ERROR);
 
 //Extract TPL array for easy access in view
 if(!empty($Controller->TPL))
 	extract($Controller->TPL,EXTR_OVERWRITE);
+
+//echo($test);
+
+//Render page
+$viewPath = Framework::getViewPath($uri["class"],$uri["method"]);
+if(Framework::templateExists())
+{
+	$templatePath = Framework::getTemplatePath();
+	//Top portion of template
+	require_once($templatePath["top"]);
 	
-//Load Helper Classes
-$framework->loadHelpers();
-
-//Top portion of template
-require_once(TEMPLATE_PATH.$_CONFIG["template"]."/index.top.php");
-
-//Include view
-require_once($framework->getView($class,$method));
-
-//Bottom portion of template
-require_once(TEMPLATE_PATH.$_CONFIG["template"]."/index.bottom.php");
+	//Include view
+	if(file_exists($viewPath))
+		require_once($viewPath);
+	
+	//Bottom portion of template
+	require_once($templatePath["bottom"]);
+}
+else
+{
+	if(file_exists($viewPath))
+		require_once($viewPath); // show view only
+}
 ?>

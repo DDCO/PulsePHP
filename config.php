@@ -9,5 +9,5 @@ $_CONFIG["password"] = "";
 /*End of Database Info*/
 $_CONFIG["template"] = "dreamy";
 $_CONFIG["SEO"] = true;
-$_CONFIG["default"] = "example"
+$_CONFIG["default"] = "home"
 ?>

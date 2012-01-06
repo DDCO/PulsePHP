@@ -10,18 +10,21 @@ class Model
 		
 		foreach($data as $column => $value)
 		{
-			$sql .= $column . " = " . '@' . $i;
+			$sql .= $column . " = " . '@' . $i . ", ";
 			$args["@".$i] = $value;
 			$i++; 
 		}
-		
+		$sql = substr($sql,0,strlen($sql)-2);
+		$sql .= " WHERE ";
 		foreach($where as $column => $value)
 		{
-			$sql .= $column . " = " . '@' . $i;
+			$sql .= $column . " = " . '@' . $i . " AND ";
 			$args["@".$i] = $value;
 			$i++; 
 		}
+		$sql = substr($sql,0,strlen($sql)-5);
 		$database->sendQuery($sql,$args);
+		return $database->affectedRows();
 	}
 	
 	public function insert($table,$data)
@@ -42,6 +45,7 @@ class Model
 		$sql = substr($sql,0,strlen($sql)-1) . ");";
 		
 		$database->sendQuery($sql,$args);
+		return $database->affectedRows();
 	}
 	
 	public function delete($table,$where)
@@ -63,6 +67,7 @@ class Model
 			}
 		}
 		$database->sendQuery($sql,$args);
+		return $database->affectedRows();
 	}
 	
 	public function select($table,$where)
@@ -84,6 +89,7 @@ class Model
 			}
 		}
 		$database->sendQuery($sql,$args);
+		return $database->getRows();
 	}
 }
 ?>

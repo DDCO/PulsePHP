@@ -4,10 +4,17 @@ class User
 	private function __construct(){}
 	private function __clone(){}
 	
+	public static function getUserID($user)
+	{
+		$database = Database::getDatabaseObject();
+		$database->sendQuery("SELECT id FROM #__users WHERE username = @user",array("@user"=>$user));
+		return $database->getField(0);
+	}
+	
 	public static function getUsergroup($user)
 	{
 		$database = Database::getDatabaseObject();
-		$database->sendQuery("SELECT name FROM #__usergroups g JOIN users u ON (u.usergroupID = g.id) WHERE username = @user",array("@user"=>$user));
+		$database->sendQuery("SELECT name FROM #__usergroups g JOIN #__users u ON (u.usergroupID = g.id) WHERE username = @user",array("@user"=>$user));
 		return $database->getField(0);
 	}
 	
@@ -54,7 +61,6 @@ class User
 		{
 			$salt = self::generateSalt();
 			$hash = crypt($pass,$salt);
-			die($hash.':'.$salt);
 			$database->sendQuery("INSERT INTO #__users (username,password,email,usergroupID) VALUES(@user,@pass,@email,@group);",array(
 				"@user"=>$user,
 				"@pass"=>$hash.':'.$salt,

@@ -1,8 +1,8 @@
 <?php
 class Mysql extends Database
 {
-	private $link;
-	private $resource;
+	protected $link;
+	protected $resource;
 	
 	public function __construct()
 	{
@@ -19,7 +19,7 @@ class Mysql extends Database
 	 */
 	public function sendQuery($query,$args=NULL)
 	{
-		parent::sendQuery($query,$args); // Calls escapeArgs and replaces #__ placeholder with database prefix.
+		$query = parent::assembleQuery($query,$args); // Calls escapeArgs and replaces #__ placeholder with database prefix.
 		$this->resource = mysql_query($query,$this->link);
 	}
 	
@@ -35,13 +35,10 @@ class Mysql extends Database
 	
 	public function getRows()
 	{
-		$i = 0;
-		while(true)
-		{
-			$temp[$i++] = mysql_fetch_assoc($this->resource);
-			if(!$temp[$i])
-				return $temp;
-		}
+		$temp = array();
+		while($row = mysql_fetch_assoc($this->resource))
+			$temp[] = $row;
+		return $temp;
 	}
 	
 	public function getField($index)

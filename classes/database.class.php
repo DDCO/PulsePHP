@@ -31,13 +31,15 @@ abstract class Database
 		return self::$instance;
 	}
 	
-	public function sendQuery(&$query,&$args=NULL)
+	public function assembleQuery($query,$args=NULL)
 	{
 		global $_CONFIG;
 		$query = str_replace("#__",$_CONFIG["tablePrefix"],$query);
 		$query = self::$instance->escapeArgs($query,$args);
+		return $query;
 	}
 	
+	public abstract function sendQuery($query,$args=NULL);
 	public abstract function affectedRows();
 	public abstract function getRow();
 	public abstract function getRows();

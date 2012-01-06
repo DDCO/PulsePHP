@@ -28,7 +28,7 @@ class ACL
 	// Make this more elegant at another time
 	private static function accessDenied()
 	{
-		die("Access Denied!");
+		trigger_error("Access Denied, you do not have permission to view this page", E_USER_ERROR);
 	}
 }
 ?>
