@@ -3,6 +3,7 @@ abstract class Database
 {
 	private static $instance;
 	
+	
 	private function __construct(){}
 	
 	public static function singleton()
@@ -11,8 +12,8 @@ abstract class Database
 		switch($_CONFIG["driver"])
 		{
 			case "mysql":
-				require_once(API_PATH."drivers/mysql.class.php");
-				self::$instance = new Mysql();
+				global $_CONFIG;
+				self::$instance = new PDO('mysql:host='.$_CONFIG["host"].';dbname='.$_CONFIG["db"], $_CONFIG["username"], $_CONFIG["password"], array(PDO::ATTR_PERSISTENT=>true));
 			break;
 			case "mysqli":
 			break;
@@ -31,21 +32,11 @@ abstract class Database
 		return self::$instance;
 	}
 	
-	public function assembleQuery($query,$args=NULL)
+	public function sendQuery($query,$args=NULL)
 	{
-		global $_CONFIG;
-		$query = str_replace("#__",$_CONFIG["tablePrefix"],$query);
-		$query = self::$instance->escapeArgs($query,$args);
-		return $query;
+		$pdos = $this->instance->prepare($query);
+		$pdos->execute($args);
+		return $pdos;
 	}
-	
-	public abstract function sendQuery($query,$args=NULL);
-	public abstract function affectedRows();
-	public abstract function getRow();
-	public abstract function getRows();
-	public abstract function getField($index);
-	public abstract function countRows();
-	public abstract function getError();
-	public abstract function escapeArgs($query,$args);
 }
 ?>

@@ -28,6 +28,19 @@ class Framework
 		trigger_error("Page does not exist", E_USER_ERROR);
 	}
 	
+	public static function loadModule($class)
+	{
+		$file = CONTROLLER_PATH . $class . ".controller.php";
+		if(file_exists($file))
+		{
+			require_once($file);
+			$module =  new $class();
+			$module->index();
+			if(file_exists($viewPath))
+				require_once (Framework::getViewPath($class,"index"));
+		}
+	}
+	
 	public static function getModel($class)
 	{
 		$file = MODEL_PATH . $class . ".model.php";
