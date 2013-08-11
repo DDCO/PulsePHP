@@ -7,36 +7,37 @@ class User
 	public static function getUserID($user)
 	{
 		$database = Database::getDatabaseObject();
-		$statement = $database->sendQuery("SELECT id FROM #__users WHERE username = @user",array("@user"=>$user));
+		$statement = $database->sendQuery("SELECT id FROM #__users WHERE username = :user",array(":user"=>$user));
 		return $statement->fetchColumn(0);
 	}
 	
 	public static function getUsergroup($user)
 	{
 		$database = Database::getDatabaseObject();
-		$statement = $database->sendQuery("SELECT name FROM #__usergroups g JOIN #__users u ON (u.usergroupID = g.id) WHERE username = @user",array("@user"=>$user));
+		$statement = $database->sendQuery("SELECT name FROM #__usergroups g JOIN #__users u ON (u.usergroupID = g.id) WHERE username = :user",array(":user"=>$user));
 		return $statement->fetchColumn(0);
 	}
 	
 	public static function getEmail($user)
 	{
 		$database = Database::getDatabaseObject();
-		$statement = $database->sendQuery("SELECT email FROM #__users WHERE username = @user",array("@user"=>$user));
+		$statement = $database->sendQuery("SELECT email FROM #__users WHERE username = :user",array(":user"=>$user));
 		return $statement->fetchColumn(0);
 	}
 	
 	public static function getPassword($user)
 	{
 		$database = Database::getDatabaseObject();
-		$statement = $database->sendQuery("SELECT password FROM #__users WHERE username = @user",array("@user"=>$user));
+		$statement = $database->sendQuery("SELECT password FROM #__users WHERE username = :user",array(":user"=>$user));
 		return $statement->fetchColumn(0);
 	}
 	
 	public static function userExists($user)
 	{
 		$database = Database::getDatabaseObject();
-		$statement = $database->sendQuery("SELECT COUNT(*) FROM #__users WHERE username = @user",array("@user"=>$user));
-		if ($statement->fetchColumn(0)>0)
+		$statement = $database->sendQuery("SELECT COUNT(*) FROM #__users WHERE username = :user",array(":user"=>$user));
+		$row = $statement->fetch(PDO::FETCH_NUM);
+		if ($row[0]>0)
 			return true;
 		return false;
 	}
@@ -61,11 +62,11 @@ class User
 		{
 			$salt = self::generateSalt();
 			$hash = crypt($pass,$salt);
-			$statement = $database->sendQuery("INSERT INTO #__users (username,password,email,usergroupID) VALUES(@user,@pass,@email,@group);",array(
-				"@user"=>$user,
-				"@pass"=>$hash.':'.$salt,
-				"@email"=>$email,
-				"@group"=>$group
+			$statement = $database->sendQuery("INSERT INTO #__users (username,password,email,usergroupID) VALUES(:user,:pass,:email,:group);",array(
+				":user"=>$user,
+				":pass"=>$hash.':'.$salt,
+				":email"=>$email,
+				":group"=>$group
 			));
 			if($statement->rowCount() > 0)
 				return true;
@@ -76,7 +77,7 @@ class User
 	public static function deleteUser($user)
 	{
 		$database = Database::getDatabaseObject();
-		$statement = $database->sendQuery("DELETE FROM #__users WHERE username = @user",array("@user"=>$user));
+		$statement = $database->sendQuery("DELETE FROM #__users WHERE username = :user",array(":user"=>$user));
 		if($statement->rowCount() > 0)
 			return true;
 		return false;
@@ -85,7 +86,7 @@ class User
 	public static function updateUsergroup($user, $usergroupID)
 	{
 		$database = Database::getDatabaseObject();
-		$statement = $database->sendQuery("UPDATE #__users SET usergroupID = @group WHERE username = @user",array("@group"=>$usergroupID,"@user"=>$user));
+		$statement = $database->sendQuery("UPDATE #__users SET usergroupID = :group WHERE username = :user",array(":group"=>$usergroupID,":user"=>$user));
 		if($statement->rowCount() > 0)
 			return true;
 		return false;
@@ -94,7 +95,7 @@ class User
 	public static function updatePassword($user,$pass)
 	{
 		$database = Database::getDatabaseObject();
-		$statement = $database->sendQuery("UPDATE #__users SET password = @pass WHERE username = @user",array("@pass"=>$pass,"@user"=>$user));
+		$statement = $database->sendQuery("UPDATE #__users SET password = :pass WHERE username = :user",array(":pass"=>$pass,":user"=>$user));
 		if($statement->rowCount() > 0)
 			return true;
 		return false;
@@ -103,7 +104,7 @@ class User
 	public static function updateEmail($user,$email)
 	{
 		$database = Database::getDatabaseObject();
-		$statement = $database->sendQuery("UPDATE #__users SET email = @email WHERE username = @user",array("@email"=>$email,"@user"=>$user));
+		$statement = $database->sendQuery("UPDATE #__users SET email = :email WHERE username = :user",array(":email"=>$email,":user"=>$user));
 		if($statement->rowCount() > 0)
 			return true;
 		return false;

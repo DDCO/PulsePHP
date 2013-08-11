@@ -29,7 +29,7 @@ class home extends Controller
 	{
 		$this->TPL["errors"] = "";
 		$auth = new userAuth();
-		$auth->redirectPage = array("controller"=>"todo","method"=>"index");
+		$auth->redirectPage = array("controller"=>"home","method"=>"index");
 		$auth->isLoggedIn();
 		
 		if(formVal::validate($this->model->loginFormRules))
@@ -47,7 +47,7 @@ class home extends Controller
 	public function register()
 	{
 		$auth = new userAuth();
-		$auth->redirectPage = array("controller"=>"todo","method"=>"index");
+		$auth->redirectPage = array("controller"=>"home","method"=>"index");
 		$auth->isLoggedIn();
 			
 		if(formVal::validate($this->model->registrationFormRules))

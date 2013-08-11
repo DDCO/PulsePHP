@@ -1,5 +1,6 @@
 <?php
 session_start();
+error_reporting(E_ALL);
 
 define("API_PATH","classes/");
 define("CONTROLLER_PATH","controllers/");

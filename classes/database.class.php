@@ -1,10 +1,12 @@
 <?php
-abstract class Database
+class Database extends PDO
 {
 	private static $instance;
 	
-	
-	private function __construct(){}
+	public function __construct($dbstr,$username=NULL,$password=NULL,$args=NULL)
+	{
+		parent::__construct($dbstr,$username,$password,$args);
+	}
 	
 	public static function singleton()
 	{
@@ -12,8 +14,7 @@ abstract class Database
 		switch($_CONFIG["driver"])
 		{
 			case "mysql":
-				global $_CONFIG;
-				self::$instance = new PDO('mysql:host='.$_CONFIG["host"].';dbname='.$_CONFIG["db"], $_CONFIG["username"], $_CONFIG["password"], array(PDO::ATTR_PERSISTENT=>true));
+				self::$instance = new Database('mysql:host='.$_CONFIG["host"].';dbname='.$_CONFIG["db"], $_CONFIG["username"], $_CONFIG["password"], array(PDO::ATTR_PERSISTENT=>true));
 			break;
 			case "mysqli":
 			break;
@@ -34,7 +35,9 @@ abstract class Database
 	
 	public function sendQuery($query,$args=NULL)
 	{
-		$pdos = $this->instance->prepare($query);
+		global $_CONFIG;
+		$query = str_replace("#__",$_CONFIG["tablePrefix"],$query);
+		$pdos = $this->prepare($query);
 		$pdos->execute($args);
 		return $pdos;
 	}
