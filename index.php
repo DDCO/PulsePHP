@@ -1,4 +1,6 @@
 <?php
+if (substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], "gzip")) 
+	ob_start("ob_gzhandler"); else ob_start();
 session_start();
 error_reporting(E_ALL);
 
@@ -9,6 +11,7 @@ define("VIEW_PATH","views/");
 define("TEMPLATE_PATH","templates/");
 define("WEB_DIRECTORY",(isset($_SERVER['HTTPS'])?"https://":"http://").rtrim($_SERVER["HTTP_HOST"].dirname($_SERVER["PHP_SELF"]),"/\\").'/');
 define("DS",'/');
+define("MODULE_PATH","modules/");
 
 //Load base API
 require_once("config.php");
@@ -34,29 +37,16 @@ else
 	trigger_error("Page does not exist", E_USER_ERROR);
 
 //Extract TPL array for easy access in view
-if(!empty($Controller->TPL))
-	extract($Controller->TPL,EXTR_OVERWRITE);
-
-//echo($test);
-
-//Render page
 $viewPath = Framework::getViewPath($uri["class"],$uri["method"]);
+$Controller->TPL["content"] = file_get_contents($viewPath);
+extract($Controller->TPL,EXTR_OVERWRITE);
+
+//include page
 if(Framework::templateExists())
 {
 	$templatePath = Framework::getTemplatePath();
-	//Top portion of template
-	require_once($templatePath["top"]);
-	
-	//Include view
-	if(file_exists($viewPath))
-		require_once($viewPath);
-	
-	//Bottom portion of template
-	require_once($templatePath["bottom"]);
+	require_once($templatePath."/index.php");
 }
 else
-{
-	if(file_exists($viewPath))
-		require_once($viewPath); // show view only
-}
+	echo($content);
 ?>

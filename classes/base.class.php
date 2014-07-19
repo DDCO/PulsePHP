@@ -30,14 +30,15 @@ class Framework
 	
 	public static function loadModule($class)
 	{
-		$file = CONTROLLER_PATH . $class . ".controller.php";
+		$file = MODULE_PATH . $class . ".module.php";
 		if(file_exists($file))
 		{
 			require_once($file);
 			$module =  new $class();
-			$module->index();
-			if(file_exists($viewPath))
-				require_once (Framework::getViewPath($class,"index"));
+			$module->onLoad();
+			$view = Framework::getViewPath($class,"index");
+			if(file_exists($view))
+				require_once ($view);
 		}
 	}
 	
@@ -56,7 +57,7 @@ class Framework
 	{
 		global $_CONFIG;
 		$root = TEMPLATE_PATH.$_CONFIG["template"];
-		return array("top"=>$root."/index.top.php", "bottom"=>$root."/index.bottom.php");
+		return $root;
 	}
 	
 	public static function getViewPath($class,$method)
@@ -120,6 +121,32 @@ class Framework
 	{
 		header("Location: ".self::route($controller,$method,false));
 		exit();
+	}
+
+	public static function minify($path)
+	{
+		$pathInfo = pathinfo($path);
+		$newFilename = $pathInfo["dirname"] . '/' . $pathInfo["filename"] . ".min." . $pathInfo["extension"];
+		if(!file_exists($newFilename))
+		{
+			$file = file_get_contents($path);
+			$min = preg_replace("/(\/\*[^*]*\*+([^\/*][^*]*\*+)*\/)/", "", $file); //remove multiline comments
+			if($pathInfo["extension"] == "js")
+				$min = preg_replace('/(\/\/(.|)+)+/', '', $min); //remove single line comments from js
+			$min = preg_replace('/(\s+\{\s+)+/', '{', $min); //remove space before open bracket
+			$min = preg_replace('/[\t\r\n]+/', '', $min); //remove whitespace
+			$min = preg_replace('/;\s+/', ';', $min); // remove space after ;
+			file_put_contents ($newFilename,$min);
+		}
+		switch($pathInfo["extension"])
+		{
+			case "css":
+				echo("<link rel='stylesheet' type='text/css' href='".WEB_DIRECTORY.$newFilename."'>");
+			break;
+			case "js":
+				echo("<script type='text/javascript' src='".WEB_DIRECTORY.$newFilename."'></script>");
+			break;
+		}
 	}
 }
 ?>
